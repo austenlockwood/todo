@@ -11,6 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160721161747) do
+
+  create_table "items", force: :cascade do |t|
+    t.integer "list_id"
+    t.string  "task"
+    t.date    "date_created"
+    t.date    "due_date"
+    t.boolean "completed"
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.string "name"
+  end
 
 end
