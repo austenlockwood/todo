@@ -10,6 +10,8 @@ group :test, :development do
   gem "minitest"
   gem "rack-test"
   gem "sqlite3"
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :production do

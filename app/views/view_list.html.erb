@@ -1,0 +1,35 @@
+<h1><%= @list.name %></h1> <!-- #class example -->
+
+<!-- <%# if @list.phone_number %>
+  You should call their phone at <%#= @list.phone_number %> -->
+<!-- <%# end %> -->
+
+<a href="/">Go to listspage</a>
+
+<table class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Current Items</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @items.each do |item| %>
+    <tr>
+      <td><%= item.task %></td>
+    </tr>
+    <% end %>
+  <tbody>
+</table>
+
+<!-- <%#= form_for @item, url: "/lists/#{@list.name}/items"
+  <%#= f.text_field :item, class: "form-control" %>
+
+<%# end %> -->
+
+<form action="/lists/<%=@list.name%>/items" method="post">
+  <input type="text" name="item[task]" placeholder="New Item">
+  <input type="hidden" name="item[list_id]" value="<%= @list.id %>">
+
+  <!--Make a button -->
+  <input type="submit" name="submit" value="Add to list">
+</form>

@@ -1,0 +1,22 @@
+<main>
+  <h1>My Lists</h1>
+</main>
+<!-- list of lists -->
+<% @lists.each do |list| %>
+  <p>
+    <a href="/lists/<%= list.name %>"><%= list.name %></a>
+    <!-- same as  -->
+    <!-- <%#= link_to list.name, "/lists/#{list.name}" %> -->
+  </p>
+<% end %>
+
+<div>
+  <form class="" action="/lists" method="post">
+    <input type="text" name="list[name]" value="">
+    <input class="btn btn-outline-primary" type="submit" name="submit" value="Create">
+  </form>
+  <form class="" action="/lists" method="post">
+    <input class="btn btn-outline-danger" type="submit" name="submit" value="Delete">
+  </form>
+
+</div>
