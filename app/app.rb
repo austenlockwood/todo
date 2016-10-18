@@ -3,7 +3,7 @@ require "better_errors"
 
 class App < Sinatra::Base
   set :public_folder, File.dirname(__FILE__) + '/assets'
-  use Rack::MethodOverride
+  use Rack::MethodOverride #makes puts and patch stuff work
 
   configure :development do
     use BetterErrors::Middleware
@@ -50,15 +50,23 @@ class App < Sinatra::Base
     # erb :"view_list.html"
   end
 
+  delete "/items/:id" do
+    @list = List.find(@item.list_id)
+    @item = Item.destroy(params["item"])
+    redirect to("/lists/#{@list.name}")
+  end
+
   run! if app_file == $PROGRAM_NAME
 end
 
-# 1 GET /lists should show all the current user tasks lists [DONE]
-# 2 POST /lists should create a new list for the current user [DONE]
-# 3 GET /lists/:name shows all incomplete items in the list with the given name [DONE]
-# 4 POST /lists/:name/items creates a new todo item, returning the id [DONE]
+
 
 # 5 PATCH /items/:id adds or updates a due date
 # 6 DELETE /items/:id marks an item as complete
 # 7 GET /next returns a random incomplete item
 # 8 GET /search?q=... finds items containing the given string
+
+# 1 GET /lists should show all the current user tasks lists [DONE]
+# 2 POST /lists should create a new list for the current user [DONE]
+# 3 GET /lists/:name shows all incomplete items in the list with the given name [DONE]
+# 4 POST /lists/:name/items creates a new todo item, returning the id [DONE]

@@ -16,6 +16,12 @@
     <% @items.each do |item| %>
     <tr>
       <td><%= item.task %></td>
+      <td>
+      <form action="/items/<%= item.id %>" method="post"
+        <input type="hidden" name="_method" value="delete">
+        <input type="submit" name="submit" value="Mark as Complete">
+      </form>
+      </td>
     </tr>
     <% end %>
   <tbody>
