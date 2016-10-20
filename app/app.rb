@@ -3,7 +3,7 @@ require "better_errors"
 
 class App < Sinatra::Base
   set :public_folder, File.dirname(__FILE__) + '/assets'
-  use Rack::MethodOverride #makes puts and patch stuff work
+  use Rack::MethodOverride #makes puts and patch stuff work.  This is why you need _method
 
   configure :development do
     use BetterErrors::Middleware
@@ -19,10 +19,10 @@ class App < Sinatra::Base
     erb :"listspage.html" # passing a symbol (like the ":" here) tells Sinatra to look in views for that file.
   end
 
-  ##
   # displays and user gets a list of all of the items in the specific list
   get "/lists/:name" do #show this particular list
-    @list = List.find_by(name: params["name"])
+    list_name = params["name"] #storing string, like "Shopping" from Sinatra
+    @list = List.find_by(name: list_name) #ActiveRecord code
     @items = Item.where(list_id: @list.id)
     erb :"view_list.html"
   end
@@ -30,7 +30,8 @@ class App < Sinatra::Base
   post "/items" do
     @item = Item.create(params["item"])
     list = List.find(@item.list_id)
-    redirect to("/lists/#{list.name}") # redirect to the list name that matches our item's list id for the item
+  # redirect to the list name that matches our item's list id for the item
+    redirect to("/lists/#{list.name}")
   end
 
   # Add a list
@@ -46,20 +47,21 @@ class App < Sinatra::Base
     redirect to("/lists/#{@list.name}") # redirect to the list name that matches our item's list id for the item
 
     # @list = List.find_by(name: params["name"])
-    #
+
     # erb :"view_list.html"
   end
 
   delete "/items/:id" do
+    @item = Item.find(params["id"])
     @list = List.find(@item.list_id)
-    @item = Item.destroy(params["item"])
+    @item.destroy
     redirect to("/lists/#{@list.name}")
   end
 
   run! if app_file == $PROGRAM_NAME
 end
 
-
+# Note: for more accurate diagnostics, use binding.pry, not the f test.  binding.pry shows you what all the params actually are for the object, whereas the f test just shows what was packaged in the form stage.  It's a BetterErrors quirk.
 
 # 5 PATCH /items/:id adds or updates a due date
 # 6 DELETE /items/:id marks an item as complete
