@@ -28,7 +28,7 @@ class App < Sinatra::Base
   end
 
   post "/items" do
-    @item = Item.create(params["item"])
+    @item = Item.create(params["item"]["due_date"])
     list = List.find(@item.list_id)
   # redirect to the list name that matches our item's list id for the item
     redirect to("/lists/#{list.name}")
@@ -51,6 +51,13 @@ class App < Sinatra::Base
     # erb :"view_list.html"
   end
 
+  patch "/items/:id" do
+    @item = Item.find(params["id"])
+    @list = List.find(@item.list_id)
+    @item.due_date = params["due_date"]
+    redirect to("/lists/#{@list.name}")
+  end
+
   delete "/items/:id" do
     @item = Item.find(params["id"])
     @list = List.find(@item.list_id)
@@ -64,7 +71,6 @@ end
 # Note: for more accurate diagnostics, use binding.pry, not the f test.  binding.pry shows you what all the params actually are for the object, whereas the f test just shows what was packaged in the form stage.  It's a BetterErrors quirk.
 
 # 5 PATCH /items/:id adds or updates a due date
-# 6 DELETE /items/:id marks an item as complete
 # 7 GET /next returns a random incomplete item
 # 8 GET /search?q=... finds items containing the given string
 
@@ -72,3 +78,4 @@ end
 # 2 POST /lists should create a new list for the current user [DONE]
 # 3 GET /lists/:name shows all incomplete items in the list with the given name [DONE]
 # 4 POST /lists/:name/items creates a new todo item, returning the id [DONE]
+# 6 DELETE /items/:id marks an item as complete

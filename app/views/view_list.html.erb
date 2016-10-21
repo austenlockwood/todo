@@ -10,12 +10,25 @@
   <thead>
     <tr>
       <th>Current Items</th>
+      <th>Due Date</th>
+      <th>Status</th>
     </tr>
   </thead>
   <tbody>
     <% @items.each do |item| %>
     <tr>
-      <td><%= item.task %></td>
+      <!-- display item -->
+      <td>
+        <%= item.task %><%= item.due_date %>
+      </td>
+      <!-- add or change due date -->
+      <td>
+      <form action="/items/<%= item.id %>" method="patch">
+        <input type="date" name="_method" value="patch">
+        <input type="submit" name="submit" value="Update">
+      </form>
+      </td>
+      <!-- delete item -->
       <td>
       <form action="/items/<%= item.id %>" method="post">
         <input type="hidden" name="_method" value="delete">
@@ -26,11 +39,6 @@
     <% end %>
   <tbody>
 </table>
-
-<!-- <%#= form_for @item, url: "/lists/#{@list.name}/items"
-  <%#= f.text_field :item, class: "form-control" %>
-
-<%# end %> -->
 
 <form action="/lists/<%=@list.name%>/items" method="post">
   <input type="text" name="item[task]" placeholder="New Item">
