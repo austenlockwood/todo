@@ -20,19 +20,19 @@ class App < Sinatra::Base
   end
 
   # displays and user gets a list of all of the items in the specific list
-  get "/lists/:name" do #show this particular list
-    list_name = params["name"] #storing string, like "Shopping" from Sinatra
-    @list = List.find_by(name: list_name) #ActiveRecord code
+  get "/lists/:name" do # show this particular list
+    list_name = params["name"] # storing string, like "Shopping" from Sinatra
+    @list = List.find_by(name: list_name) # ActiveRecord code
     @items = Item.where(list_id: @list.id)
     erb :"view_list.html"
   end
 
-  post "/items" do
-    @item = Item.create(params["item"]["due_date"])
-    list = List.find(@item.list_id)
-  # redirect to the list name that matches our item's list id for the item
-    redirect to("/lists/#{list.name}")
-  end
+  # post "/items" do
+  #   @item = Item.create(params["item"]["due_date"])
+  #   list = List.find(@item.list_id)
+  # # redirect to the list name that matches our item's list id for the item
+  #   redirect to("/lists/#{list.name}")
+  # end
 
   # Add a list
   post "/lists" do  # user names a new list and it is created, then redirects to listspage.
@@ -55,6 +55,7 @@ class App < Sinatra::Base
     @item = Item.find(params["id"])
     @list = List.find(@item.list_id)
     @item.due_date = params["due_date"]
+    @item.save
     redirect to("/lists/#{@list.name}")
   end
 

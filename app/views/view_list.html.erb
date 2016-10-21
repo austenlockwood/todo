@@ -23,10 +23,26 @@
       </td>
       <!-- add or change due date -->
       <td>
-      <form action="/items/<%= item.id %>" method="patch">
-        <input type="date" name="_method" value="patch">
+
+ <!-- action="/lorem/ipsum" is the route that will be hit;
+      method="post" is the get or post action the browser understands -->
+      <form action="/items/<%= item.id %>" method="post">
+
+   <!-- type="hidden" is telling browser not to render the field;
+        name="_method" and value="patch" are telling the browser to treat the form as a patch  -->
+        <input type="hidden" name="_method" value="patch">
+
+   <!-- type="date" is telling the browser what kind of field this is;
+        name="due_date" is the title of the info being passed in the request;
+        value="" just means there is no default value -->
+        <input type="date" name="due_date" value="">
+
+   <!-- type="submit" is telling the browser that clicking means transmit info;
+        name="submit" just has to be there even though it's redundant;
+        value="Update" is what's displayed to the user -->
         <input type="submit" name="submit" value="Update">
       </form>
+      
       </td>
       <!-- delete item -->
       <td>
@@ -41,6 +57,7 @@
 </table>
 
 <form action="/lists/<%=@list.name%>/items" method="post">
+  <!-- name ends up being params -->
   <input type="text" name="item[task]" placeholder="New Item">
   <input type="hidden" name="item[list_id]" value="<%= @list.id %>">
 
