@@ -14,7 +14,9 @@ class App < Sinatra::Base
     erb :"homepage.html"
   end
 
- # displays and list of all lists displays
+
+
+  # displays and list of all lists displays
   get "/lists" do
     @lists = List.all
     erb :"listspage.html" # passing a symbol (like the ":" here) tells Sinatra to look in views for that file.
@@ -58,12 +60,19 @@ class App < Sinatra::Base
     redirect to("/lists/#{@list.name}")
   end
 
+  # displays a random incomplete task
+  get "/next" do
+    @items = Item.where(completed: nil)
+    @item = @items.sample
+    @list = List.find(@item.list_id)
+    erb :"random.html"
+  end
+
   run! if app_file == $PROGRAM_NAME
 end
 
 # Note: for more accurate diagnostics, use binding.pry, not the f test.  binding.pry shows you what all the params actually are for the object, whereas the f test just shows what was packaged in the form stage.  It's a BetterErrors quirk.
 
-# 7 GET /next returns a random incomplete item
 # 8 GET /search?q=... finds items containing the given string
 
 # 1 GET /lists should show all the current user tasks lists [DONE]
@@ -72,3 +81,4 @@ end
 # 4 POST /lists/:name/items creates a new todo item, returning the id [DONE]
 # 5 PATCH /items/:id adds or updates a due date
 # 6 DELETE /items/:id marks an item as complete
+# 7 GET /next returns a random incomplete item
