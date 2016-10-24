@@ -14,7 +14,8 @@ class App < Sinatra::Base
     erb :"homepage.html"
   end
 
-  get "/lists" do # displays and list of all lists displays
+ # displays and list of all lists displays
+  get "/lists" do
     @lists = List.all
     erb :"listspage.html" # passing a symbol (like the ":" here) tells Sinatra to look in views for that file.
   end
@@ -27,13 +28,6 @@ class App < Sinatra::Base
     erb :"view_list.html"
   end
 
-  # post "/items" do
-  #   @item = Item.create(params["item"]["due_date"])
-  #   list = List.find(@item.list_id)
-  # # redirect to the list name that matches our item's list id for the item
-  #   redirect to("/lists/#{list.name}")
-  # end
-
   # Add a list
   post "/lists" do  # user names a new list and it is created, then redirects to listspage.
     List.create(params["list"])
@@ -41,16 +35,13 @@ class App < Sinatra::Base
   end
 
   # Add an item to a given list
-  post "/lists/:name/items" do #view_list.html
+  post "/lists/:name/items" do # view_list.html
     @item = Item.create(params["item"])
     @list = List.find(@item.list_id)
     redirect to("/lists/#{@list.name}") # redirect to the list name that matches our item's list id for the item
-
-    # @list = List.find_by(name: params["name"])
-
-    # erb :"view_list.html"
   end
 
+  # adds or updates a due date
   patch "/items/:id" do
     @item = Item.find(params["id"])
     @list = List.find(@item.list_id)
@@ -59,6 +50,7 @@ class App < Sinatra::Base
     redirect to("/lists/#{@list.name}")
   end
 
+  # marks an item as complete
   delete "/items/:id" do
     @item = Item.find(params["id"])
     @list = List.find(@item.list_id)
