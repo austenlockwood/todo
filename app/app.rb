@@ -71,7 +71,6 @@ end
 
 # Note: for more accurate diagnostics, use binding.pry, not the f test.  binding.pry shows you what all the params actually are for the object, whereas the f test just shows what was packaged in the form stage.  It's a BetterErrors quirk.
 
-# 5 PATCH /items/:id adds or updates a due date
 # 7 GET /next returns a random incomplete item
 # 8 GET /search?q=... finds items containing the given string
 
@@ -79,4 +78,5 @@ end
 # 2 POST /lists should create a new list for the current user [DONE]
 # 3 GET /lists/:name shows all incomplete items in the list with the given name [DONE]
 # 4 POST /lists/:name/items creates a new todo item, returning the id [DONE]
+# 5 PATCH /items/:id adds or updates a due date
 # 6 DELETE /items/:id marks an item as complete
