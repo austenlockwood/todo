@@ -14,8 +14,6 @@ class App < Sinatra::Base
     erb :"homepage.html"
   end
 
-
-
   # displays and list of all lists displays
   get "/lists" do
     @lists = List.all
@@ -66,6 +64,13 @@ class App < Sinatra::Base
     @item = @items.sample
     @list = List.find(@item.list_id)
     erb :"random.html"
+  end
+
+  get "/search" do
+    # @item = Item.new
+    q = params[:q]
+    # @item = Item.find_by(name: params["item"]["name"])
+    erb :"search.html"
   end
 
   run! if app_file == $PROGRAM_NAME
